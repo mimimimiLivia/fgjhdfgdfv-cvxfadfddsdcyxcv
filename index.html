@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Praccer — Scrim Tracker</title>
+<meta name="description" content="Praccer is a private scrim tracker and analytics tool for a VALORANT team.">
+<style>
+  :root {
+    --ink: #111;
+    --paper: #fff;
+    --grey: #666;
+    --line: #111;
+    --pink: #f9c9d6;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  ::selection { background: var(--pink); }
+  main { max-width: 720px; margin: 0 auto; padding: 56px 20px 40px; }
+  .top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 2px solid var(--line);
+    padding-bottom: 10px; margin-bottom: 48px;
+    font-family: "Courier New", Courier, monospace; font-size: 14px;
+  }
+  .top b { font-weight: 700; letter-spacing: .04em; }
+  h1 { font-size: 52px; line-height: 1.05; margin: 0 0 20px; font-weight: 700; letter-spacing: -0.01em; }
+  mark { background: linear-gradient(transparent 55%, var(--pink) 55%); color: inherit; padding: 0 2px; }
+  h2 {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+    margin: 56px 0 16px; padding-top: 10px; border-top: 1px solid var(--line);
+  }
+  p { margin: 0 0 16px; }
+  .intro { font-size: 21px; }
+  ol, ul { margin: 0 0 16px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  li::marker { font-family: "Courier New", Courier, monospace; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: 16px; }
+  th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid #ddd; vertical-align: top; }
+  th {
+    font-family: "Courier New", Courier, monospace; font-size: 13px;
+    text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--line);
+  }
+  td:first-child { white-space: nowrap; font-weight: 700; }
+  .custom td:first-child { background: var(--pink); padding-left: 8px; }
+  figure { margin: 32px 0 0; }
+  figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+  figcaption { font-size: 14px; color: var(--grey); margin-top: 8px; }
+  .discord { font-family: "Courier New", Courier, monospace; background: var(--pink); padding: 2px 6px; }
+  footer {
+    margin-top: 64px; padding-top: 12px; border-top: 2px solid var(--line);
+    font-size: 13px; color: var(--grey); line-height: 1.5;
+  }
+  @media (max-width: 520px) {
+    body { font-size: 17px; }
+    h1 { font-size: 38px; }
+    .intro { font-size: 19px; }
+    td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="top"><b>PRACCER</b><span>private analyst tool</span></div>
+
+  <h1>A scrim tracker for <mark>one team</mark>.</h1>
+  <p class="intro">Praccer is a private tool I built for my VALORANT work. It turns the data from our practice matches into the statistics we use to review our scrims and prepare for competition.</p>
+
+  <h2>How it works</h2>
+  <ol>
+    <li>An Overwolf app records match events during our scrims and exports them to a JSON file.</li>
+    <li>Praccer reads that file locally and sorts the data by match, round and player.</li>
+    <li>The statistics are computed and shown to the team for review after each session.</li>
+  </ol>
+
+  <figure>
+    <img src="dashboard.png" alt="Praccer dashboard showing team winrate, match history, and stats by map and by agent" width="1691" height="988">
+    <figcaption>Team names shown on the screenshot are purely for illustrative purposes.</figcaption>
+  </figure>
+
+  <h2>Why Praccer needs the Riot API</h2>
+  <p>Right now Praccer is limited to what an Overwolf app can capture during a match. The Riot API would give us the full match data after each game, which we cannot get any other way:</p>
+  <ul>
+    <li><strong>Damage dealt and received</strong> per player and per round, for stats such as ADR and trade efficiency.</li>
+    <li><strong>Player positions</strong> at key events, so we can review positioning and setups round by round on the map.</li>
+  </ul>
+  <p>The API would only be used for matches played by our own team, after each match has ended. The number of players is small (one roster) and requests are made only when we import a new match, so the volume stays very low. Each player's data is only accessed with their consent.</p>
+
+  <h2>What it measures</h2>
+  <table>
+    <thead><tr><th>Stat</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>K / D / A</td><td>Kills, deaths and assists per player and per map.</td></tr>
+      <tr><td>HS%</td><td>Headshot percentage.</td></tr>
+      <tr><td>Compositions</td><td>Agent compositions played and their results.</td></tr>
+      <tr class="custom"><td>Round Swing</td><td>How much each player's actions changed the outcome of a round.</td></tr>
+      <tr class="custom"><td>Rating 1+ %</td><td>Share of matches where a player reaches a rating of 1.0 or more.</td></tr>
+    </tbody>
+  </table>
+  <p>The highlighted rows are a sample of custom metrics I built for our own analysis.</p>
+
+  <h2>Usage &amp; data</h2>
+  <ul>
+    <li>Only my teammates and I use Praccer. It is not distributed or offered to the public.</li>
+    <li>It is free and not monetised in any way.</li>
+    <li>It only uses data from our own scrims and players. The data is processed locally and never sold or shared.</li>
+    <li>We only use it for review after matches. It gives no in-game advantage.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Discord: <span class="discord">terreurgrunt</span></p>
+
+  <footer>
+    Praccer isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+  </footer>
+
+</main>
+</body>
+</html>
